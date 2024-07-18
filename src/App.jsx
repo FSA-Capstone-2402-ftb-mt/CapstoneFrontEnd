@@ -1,14 +1,17 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import { Route, Routes } from 'react-router-dom'
 import StandardGameBoard from './components/StandardGameBoard.jsx'
+import HomePage from './components/HomePage.jsx'
 
 function App() {
 
   return (
     <>
-      <StandardGameBoard />
+      <Routes>
+        <Route path='/' element={<HomePage/>}/>
+        <Route path='/standard_game' element={<StandardGameBoard/>}/>
+      </Routes>
     </>
   )
 }
