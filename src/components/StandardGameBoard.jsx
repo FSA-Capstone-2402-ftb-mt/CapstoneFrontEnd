@@ -6,7 +6,9 @@ export default function StandardGameBoard(){
         <>
         <div className="game-board">
             <div className="tile-row" id="game-board-row-1">
-                <div className="singleTile"></div>
+                <div className="singleTile">
+                    <input type="text" id="letterBox"></input>
+                </div>
                 <div className="singleTile"></div>
                 <div className="singleTile"></div>
                 <div className="singleTile"></div>
