@@ -11,12 +11,6 @@ export default function TileRow(){
         inputRefs.current = inputRefs.current.slice(0, inputs.length).map((_, i)=> inputRefs.current[i] || React.createRef());
     },[inputs.length]);
 
-    // useEffect(()=>{
-    //     if(focusIndex !== null && inputRefs.current[focusIndex]){
-    //          inputRefs.current[focusIndex].current.focus();
-    //     }
-    // },[focusIndex])
-
     const handleInputChange = (e, index) =>{
         const value = e.target.value;
         if(value.length <=1){
@@ -33,7 +27,6 @@ export default function TileRow(){
               setTimeout(()=>{
                 inputRefs.current[index + 1].current.focus();
               },0)
-            //   setFocusIndex(index + 1);
             }
         }
     }
@@ -51,6 +44,15 @@ export default function TileRow(){
             setTimeout(()=>{
                 inputRefs.current[index - 1].current.focus();
               },0)
+        }
+        if(e.key === 'Enter' && index==4){
+            const newDisabled = [...disabled]
+            newDisabled[index]=true;
+            setDisabled(newDisabled);
+        }
+        if(e.key === 'Escape' && index){
+            e.preventDefault();
+            e.target.blur();
         }
     };
 
