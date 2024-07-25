@@ -1,5 +1,5 @@
 import React from "react";
-import TileRow from './TileRow';
+import TileRow from './TileRow/TileRow';
 
 export default function StandardGameBoard(){
 

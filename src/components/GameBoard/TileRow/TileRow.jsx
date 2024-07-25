@@ -27,7 +27,8 @@ export default function TileRow(){
 
             if(value && index < inputs.length - 1){
               const newDisabled = [...disabled];
-              newDisabled[index + 1] = false;  
+              newDisabled[index + 1] = false;
+              newDisabled[index] = true;  
               setDisabled(newDisabled);
               setTimeout(()=>{
                 inputRefs.current[index + 1].current.focus();
@@ -44,6 +45,7 @@ export default function TileRow(){
             //sets the previous tile to disabled = false so that when you backspace you can enter in the info from before
             const newDisabled = [...disabled]
             newDisabled[index-1] = false;
+            newDisabled[index]=true;
             setDisabled(newDisabled);
             //focus on the previous input
             setTimeout(()=>{
