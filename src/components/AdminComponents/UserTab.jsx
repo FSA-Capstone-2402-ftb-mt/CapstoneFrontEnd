@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -6,26 +6,25 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-//Create a table to show a few of the words with it ID, Word, Day of the week and Day Name
-function createData(id, word, day_of_week, day_name) {
-  return { id, word, day_of_week, day_name };
+function createData(id, username, join_date, overall_score, overall_games) {
+  return { id, username, join_date, overall_score, overall_games };
 }
 
 const rows = [
-  createData(1, 'cameo', 1, 'Sunday'),
-  createData(2, 'adapt', 2, 'Monday'),
-  createData(3, 'drake', 3, 'Tuesday'),
-  createData(4, 'exile', 4, 'Wednesday'),
-]
+  createData(1, 'AlbertoM', 0, 0, 0),
+  createData(2, 'TylerS', 0, 0, 0),
+  createData(3, 'EdwinV', 0, 0, 0),
+  createData(4, 'SlavikT', 0, 0, 0),
+];
 
-export default function WordTable() {
+export default function UserTable() {
   const navigate = useNavigate();
 
-  const handleWordClick = () => {
-    navigate('/admin_dashboard/AllWords')
+  const handleUserClick = () => {
+    navigate('admin_dashboard/AllUsers')
   };
 
   return (
@@ -33,11 +32,12 @@ export default function WordTable() {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Words</TableCell>
+            <TableCell>Users</TableCell>
             <TableCell align="right">ID</TableCell>
-            <TableCell align="right">Word</TableCell>
-            <TableCell align="right">Day of Week</TableCell>
-            <TableCell align="right">Day Name</TableCell>
+            <TableCell align="right">Username</TableCell>
+            <TableCell align="right">Join Date</TableCell>
+            <TableCell align="right">Overall Score</TableCell>
+            <TableCell align="right">Overall Games</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -50,20 +50,22 @@ export default function WordTable() {
                 {row.name}
               </TableCell>
               <TableCell align="right">{row.id}</TableCell>
-              <TableCell align="right">{row.word}</TableCell>
-              <TableCell align="right">{row.day_of_week}</TableCell>
-              <TableCell align="right">{row.day_name}</TableCell>
+              <TableCell align="right">{row.username}</TableCell>
+              <TableCell align="right">{row.join_date}</TableCell>
+              <TableCell align="right">{row.overall_score}</TableCell>
+              <TableCell align="right">{row.overall_games}</TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
       <Button
-        onClick={handleWordClick}
+        onClick={handleUserClick}
         style={{
           backgroundColor: 'lightblue',
           borderRadius: '25px',
 
-        }}>See All Words</Button>
+        }}>See All Users</Button>
     </TableContainer>
+
   );
 };
