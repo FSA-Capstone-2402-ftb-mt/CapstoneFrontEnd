@@ -7,11 +7,14 @@ import { Link } from "react-router-dom";
 export default function Navigations() {
   return (
     <nav className="navBar">
-      <ul>
-        <li>
-          <Link to="/register">Register</Link>
-        </li>
-      </ul>
+        <ul>
+            <li>
+                <Link to="/login">Login</Link>
+            </li>
+            <li>
+                <Link to="/register">Register</Link>
+            </li>
+        </ul>
     </nav>
   );
 }
