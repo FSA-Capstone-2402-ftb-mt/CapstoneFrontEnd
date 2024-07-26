@@ -12,6 +12,8 @@ function App() {
       <Routes>
         <Route path='/' element={<HomePage/>}/>
         <Route path='/standard_game' element={<StandardGameBoard/>}/>
+        <Route path='/timed_game'/>
+        <Route path='/account_details'/>
         <Route path='/admin_dashboard' element={<AdminDashboard/>}/>
       </Routes>
     </>
