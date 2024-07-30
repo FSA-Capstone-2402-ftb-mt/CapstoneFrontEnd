@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useRef, useEffect, useCallback } from "react";
 
-export default function TileRow(){
+export default function TileRow({onRowComplete, rowIndex, active}){
     const[inputs, setInputs] = useState(['','','','','']);
     const[disabled, setDisabled] = useState([false,true,true,true,true]);
     // const[focusIndex, setFocusIndex]=useState(null);
@@ -45,10 +45,13 @@ export default function TileRow(){
                 inputRefs.current[index - 1].current.focus();
               },0)
         }
-        if(e.key === 'Enter' && index==4){
+        if(e.key === 'Enter' && index=== inputs.length - 1){
             const newDisabled = [...disabled]
             newDisabled[index]=true;
             setDisabled(newDisabled);
+            onRowComplete(rowIndex);
+        }else if (e.key === 'Enter' & index!==inputs.length-1){
+            alert('Please fill the entire row before pressing enter')
         }
         if(e.key === 'Escape' && index){
             e.preventDefault();
@@ -59,11 +62,14 @@ export default function TileRow(){
     const setRef = useCallback((element, index) => {
         inputRefs.current[index] = { current: element };
     }, []);
+
     return(
-            <div className="tile-row">
+            <div 
+            className="tile-row">
                 {inputs.map((input, index) =>{
+                    const cellDisabled = disabled[index] || !active;
                     return(
-                    <div key={index} className="singleTile">
+                    <div key={index} className="singleTile" style={{background: cellDisabled ? "grey" : ""}}>
                         <input
                             type="text"
                             ref={(element)=> setRef(element,index)}
@@ -71,7 +77,7 @@ export default function TileRow(){
                             value={input}
                             onChange={(e)=> handleInputChange(e,index)}
                             onKeyDown={(e)=> handleKeyDown(e, index)}
-                            disabled={disabled[index]}
+                            disabled={cellDisabled}
                             maxLength={1}
                         /> 
                     </div>)
