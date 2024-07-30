@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 
 import Register from "./components/Register";
+import Login from "./components/Login";
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
 
                 <Navigations />
                 <Routes>
+                    <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                 </Routes>
             </div>

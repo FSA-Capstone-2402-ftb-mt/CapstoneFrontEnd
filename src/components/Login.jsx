@@ -13,7 +13,7 @@ const Login = () => {
         setError(null);
         try {
             const response = await fetch(
-                "https://fsa-book-buddy-b6e748d1380d.herokuapp.com/api/users/login",
+                "http://localhost:3032/api/users/login",
                 {
                     method: "POST",
                     headers: {
@@ -26,6 +26,7 @@ const Login = () => {
                 const data = await response.json();
                 setLogin(true);
                 sessionStorage.setItem('token', data.token);
+                console.log(data.token);
             } else {
                 setError("Login failed");
             }
@@ -57,9 +58,9 @@ const Login = () => {
                 <label>
                     Email:
                     <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
                     />
                 </label>
                 <label>
