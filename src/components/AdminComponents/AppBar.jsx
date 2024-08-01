@@ -14,15 +14,15 @@ export default function AdminAppBar() {
 const navigate = useNavigate();
 
 const handleUserClick = () => {
-    navigate('/admin_dashboard/AllUser')
+    navigate('/AllUsers')
 };
 
 const handleWordClick = () => {
-    navigate('/admin_dashboard/AllWors')
+    navigate('/AllWords')
 };
 
 const handleSettingClick = () => {
-    navigate('/admin_dashboard/Setting')
+    navigate('/Setting')
 };
 
     return (
