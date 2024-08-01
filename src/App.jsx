@@ -17,6 +17,8 @@ function App() {
         <Route path='/admin_dashboard/*' element={<AdminDashBoard />} />
         <Route path='/admin_dashboard/AllWords' element={<AllWords />} />
         <Route path='/admin_dashboard/AllUsers' element={<AllUsers />} />
+        <Route path='/timed_game'/>
+        <Route path='/account_details'/>
       </Routes>
     </>
   )
