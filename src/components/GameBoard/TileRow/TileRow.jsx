@@ -1,9 +1,12 @@
 import React from "react";
 import { useState, useRef, useEffect, useCallback } from "react";
+import { CompareGuessToWOTD } from "./HandleInputChange";
+import getStatusColor from "./StatusColor";
 
-export default function TileRow({onRowComplete, rowIndex, active}){
+export default function TileRow({onRowComplete, rowIndex, active, status, guessStatus, setGuessStatus, guessIndex, setGuessIndex, activeRow, gameOver, setGameOver}){
     const[inputs, setInputs] = useState(['','','','','']);
     const[disabled, setDisabled] = useState([false,true,true,true,true]);
+    // const[guessStatus, setGuessStatus]=useState(['','','','',''])
     // const[focusIndex, setFocusIndex]=useState(null);
     const inputRefs = useRef([]);
 
@@ -12,7 +15,7 @@ export default function TileRow({onRowComplete, rowIndex, active}){
     },[inputs.length]);
 
     const handleInputChange = (e, index) =>{
-        const value = e.target.value;
+        const value = e.target.value.toUpperCase();
         if(value.length <=1){
             //creating a shallow copy to avoid directly mutating the state
             const newInputs = [...inputs];
@@ -45,11 +48,17 @@ export default function TileRow({onRowComplete, rowIndex, active}){
                 inputRefs.current[index - 1].current.focus();
               },0)
         }
+        //This is the code that handles when you hit enter after typing in all 5 letters of your guess.
         if(e.key === 'Enter' && index=== inputs.length - 1){
             const newDisabled = [...disabled]
             newDisabled[index]=true;
             setDisabled(newDisabled);
             onRowComplete(rowIndex);
+            const status = CompareGuessToWOTD('APPLE', inputs, guessStatus, activeRow)
+            setGuessStatus(status.newGuessStatus);
+            if(status.winningGuess){
+                setGameOver(true);
+            }
         }else if (e.key === 'Enter' & index!==inputs.length-1){
             alert('Please fill the entire row before pressing enter')
         }
@@ -67,9 +76,10 @@ export default function TileRow({onRowComplete, rowIndex, active}){
             <div 
             className="tile-row">
                 {inputs.map((input, index) =>{
-                    const cellDisabled = disabled[index] || !active;
+                    const cellDisabled = disabled[index] || !active || gameOver;
+                    const status = guessStatus[rowIndex][index]
                     return(
-                    <div key={index} className="singleTile" style={{background: cellDisabled ? "grey" : ""}}>
+                    <div key={index} className="singleTile" style={{backgroundColor: getStatusColor(status)}}>
                         <input
                             type="text"
                             ref={(element)=> setRef(element,index)}
@@ -85,3 +95,4 @@ export default function TileRow({onRowComplete, rowIndex, active}){
             </div>            
     );
 }
+//{background: cellDisabled ? "grey" : ""}
