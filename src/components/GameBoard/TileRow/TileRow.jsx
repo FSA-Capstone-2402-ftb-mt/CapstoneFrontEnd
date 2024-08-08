@@ -6,8 +6,6 @@ import getStatusColor from "./StatusColor";
 export default function TileRow({onRowComplete, rowIndex, active, status, guessStatus, setGuessStatus, guessIndex, setGuessIndex, activeRow, gameOver, setGameOver}){
     const[inputs, setInputs] = useState(['','','','','']);
     const[disabled, setDisabled] = useState([false,true,true,true,true]);
-    // const[guessStatus, setGuessStatus]=useState(['','','','',''])
-    // const[focusIndex, setFocusIndex]=useState(null);
     const inputRefs = useRef([]);
 
     useEffect(()=>{
@@ -49,7 +47,10 @@ export default function TileRow({onRowComplete, rowIndex, active, status, guessS
               },0)
         }
         //This is the code that handles when you hit enter after typing in all 5 letters of your guess.
-        if(e.key === 'Enter' && index=== inputs.length - 1){
+        //It takes the existing state of disabled and makes a shallow copy. Then sets the values to true and disables the existing row.
+        //It then sets status to an array of values of either "correct","partial","incorrect".
+        //then it updates the guessStatus state with those values. those are stored in the app.jsx
+        if(e.key === 'Enter' && index=== inputs.length - 1 && inputs[4]!==""){
             const newDisabled = [...disabled]
             newDisabled[index]=true;
             setDisabled(newDisabled);
@@ -58,8 +59,10 @@ export default function TileRow({onRowComplete, rowIndex, active, status, guessS
             setGuessStatus(status.newGuessStatus);
             if(status.winningGuess){
                 setGameOver(true);
+
             }
-        }else if (e.key === 'Enter' & index!==inputs.length-1){
+            //if you try to enter before all 5 inputs are entered it will give you this warning
+        }else if (e.key === 'Enter' && (index!==inputs.length-1 || inputs[4]=="")){
             alert('Please fill the entire row before pressing enter')
         }
         if(e.key === 'Escape' && index){
