@@ -31,6 +31,7 @@ export default function TileRow({onRowComplete, rowIndex, active, status, guessS
             }
         }
     }
+    //This code allows the backspace taken as an input and takes you back to the previous input when you hit it. It also makes the current index no longer active/editable
     const handleKeyDown = (e, index) =>{
         if(e.key === 'Backspace' && !inputs[index] && index > 0){
             const newInputs = [...inputs];
@@ -57,9 +58,12 @@ export default function TileRow({onRowComplete, rowIndex, active, status, guessS
             onRowComplete(rowIndex);
             const status = CompareGuessToWOTD('APPLE', inputs, guessStatus, activeRow)
             setGuessStatus(status.newGuessStatus);
+            //This is what returns which guess was the correct answer
             if(status.winningGuess){
                 setGameOver(true);
-
+                let correctGuess = [rowIndex];
+                console.log(correctGuess)
+                return correctGuess;
             }
             //if you try to enter before all 5 inputs are entered it will give you this warning
         }else if (e.key === 'Enter' && (index!==inputs.length-1 || inputs[4]=="")){
