@@ -10,15 +10,17 @@ import PeopleIcon from '@mui/icons-material/People';
 // import { Link } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+
+//Navbar for each tab displayed in the Admin Dashboard
 export default function AdminAppBar() {
 const navigate = useNavigate();
 
 const handleUserClick = () => {
-    navigate('/AllUsers')
+    navigate('/admin_dashboard/AllUsers')
 };
 
 const handleWordClick = () => {
-    navigate('/AllWords')
+    navigate('/admin_dashboard/AllWords')
 };
 
 const handleSettingClick = () => {
