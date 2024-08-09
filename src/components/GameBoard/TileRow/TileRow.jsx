@@ -61,9 +61,9 @@ export default function TileRow({onRowComplete, rowIndex, active, status, guessS
             //This is what returns which guess was the correct answer
             if(status.winningGuess){
                 setGameOver(true);
-                let correctGuess = [rowIndex];
-                console.log(correctGuess)
-                return correctGuess;
+                let correctGuessIndex = [rowIndex] + 1;
+                console.log(correctGuessIndex)
+                return correctGuessIndex;
             }
             //if you try to enter before all 5 inputs are entered it will give you this warning
         }else if (e.key === 'Enter' && (index!==inputs.length-1 || inputs[4]=="")){
