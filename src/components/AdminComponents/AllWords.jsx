@@ -1,45 +1,57 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
+import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import dayjs from 'dayjs';
 
-export default function BasicDateCalendar() {
-    const [selectedDate, setSelectedDate] = React.useState(null);
+export default function CalendarWithWords() {
+    const [selectedDate, setSelectedDate] = useState(dayjs());
+    const [monthWords, setMonthWords] = useState({});
+    const [wordOfDay, setWordOfDay] = useState('');
 
-    // function to display the words of the month
-    const wordsOfTheMonth = {
-        '2024-07-30': 'Event A: Meeting at 10 AM',
-        '2024-08-01': 'Event B: Conference at 2 PM',
+    useEffect(() => {
+        const fetchMonthWords = async (month) => {
+            try {
+                const response = await fetch(`http://localhost:3032/api/words/month/${month}`);
+                const result = await response.json();
+
+                // Transform the data structure if necessary
+                const words = {};
+                result.words.forEach(wordObj => {
+                    const day = Object.keys(wordObj)[0];  // Get the key which is the day
+                    words[day] = wordObj[day];  // Set the word in the object
+                });
+
+                setMonthWords(words);
+            } catch (e) {
+                console.error('Failed to fetch words of the month!', e);
+            }
+        };
+
+        const currentMonth = selectedDate.format('MMMM');
+        fetchMonthWords(currentMonth);
+    }, [selectedDate]);
+
+    const handleDateChange = (newDate) => {
+        setSelectedDate(newDate);
+        const day = newDate.date().toString(); // Convert day to string to match the key in monthWords
+        setWordOfDay(monthWords[day] || 'No word for this day');
     };
-
-    // Format date to string for lookup
-    const formatDateForLookup = (date) => date.format('YYYY-MM-DD');
-
-    // Handle date change
-    const handleDateChange = (newValue) => {
-        setSelectedDate(newValue);
-    };
-
-    // Get information based on selected date
-    const information = selectedDate ? dateInfo[formatDateForLookup(selectedDate)] : 'Select a date to see information';
 
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <div style={{ display: 'flex' }}>
+            <div>
+                <h1>{selectedDate.format('MMMM')} Words</h1>
                 <DateCalendar
+                    views={['month', 'day']}
+                    value={selectedDate}
                     onChange={handleDateChange}
                 />
-                <div style={{ marginLeft: '20px', padding: '10px', border: '1px solid #ccc' }}>
-                    <h3>Word Tab</h3>
-                    <p>{information}</p>
-                    <input type="text" placeholder="Change Word"></input><br></br>
-                    <button>Change Word</button><br></br>
-                    <button>Delete Word</button>
-
+                <div>
+                    <h2>Word of the Day</h2>
+                    <p>{wordOfDay}</p>
                 </div>
             </div>
         </LocalizationProvider>
     );
 }
-
