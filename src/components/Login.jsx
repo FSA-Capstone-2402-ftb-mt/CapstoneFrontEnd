@@ -1,12 +1,14 @@
 /* TODO - add your code to create a functional React component that renders a login form */
 
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"
 
 const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
     const [login, setLogin] = useState(false);
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -26,7 +28,8 @@ const Login = () => {
                 const data = await response.json();
                 setLogin(true);
                 sessionStorage.setItem('token', data.token);
-                console.log(data.token);
+                //console.log(data.token);
+                navigate('/loginTabs');
             } else {
                 setError("Login failed");
             }
@@ -56,7 +59,7 @@ const Login = () => {
             }}>Login successful</p>}
             <form onSubmit={handleSubmit}>
                 <label>
-                    Email:
+                    Username:
                     <input
                         type="text"
                         value={username}
