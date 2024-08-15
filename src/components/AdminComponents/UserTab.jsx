@@ -24,7 +24,7 @@ export default function UserTable() {
   const navigate = useNavigate();
 
   const handleUserClick = () => {
-    navigate('admin_dashboard/AllUsers')
+    navigate('/admin_dashboard/AllUsers')
   };
 
   return (
@@ -32,7 +32,7 @@ export default function UserTable() {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Users</TableCell>
+            <TableCell>Users Table</TableCell>
             <TableCell align="right">ID</TableCell>
             <TableCell align="right">Username</TableCell>
             <TableCell align="right">Join Date</TableCell>
@@ -43,7 +43,7 @@ export default function UserTable() {
         <TableBody>
           {rows.map((row) => (
             <TableRow
-              key={row.name}
+              key={row.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
