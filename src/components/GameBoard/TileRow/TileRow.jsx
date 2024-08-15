@@ -1,10 +1,11 @@
 import React from "react";
 import { useState, useRef, useEffect, useCallback } from "react";
+import { CompareGuessToWOTD } from "./HandleInputChange";
+import getStatusColor from "./StatusColor";
 
-export default function TileRow(){
+export default function TileRow({onRowComplete, rowIndex, active, status, guessStatus, setGuessStatus, guessIndex, setGuessIndex, activeRow, gameOver, setGameOver}){
     const[inputs, setInputs] = useState(['','','','','']);
     const[disabled, setDisabled] = useState([false,true,true,true,true]);
-    // const[focusIndex, setFocusIndex]=useState(null);
     const inputRefs = useRef([]);
 
     useEffect(()=>{
@@ -12,7 +13,7 @@ export default function TileRow(){
     },[inputs.length]);
 
     const handleInputChange = (e, index) =>{
-        const value = e.target.value;
+        const value = e.target.value.toUpperCase();
         if(value.length <=1){
             //creating a shallow copy to avoid directly mutating the state
             const newInputs = [...inputs];
@@ -30,6 +31,7 @@ export default function TileRow(){
             }
         }
     }
+    //This code allows the backspace taken as an input and takes you back to the previous input when you hit it. It also makes the current index no longer active/editable
     const handleKeyDown = (e, index) =>{
         if(e.key === 'Backspace' && !inputs[index] && index > 0){
             const newInputs = [...inputs];
@@ -45,10 +47,27 @@ export default function TileRow(){
                 inputRefs.current[index - 1].current.focus();
               },0)
         }
-        if(e.key === 'Enter' && index==4){
+        //This is the code that handles when you hit enter after typing in all 5 letters of your guess.
+        //It takes the existing state of disabled and makes a shallow copy. Then sets the values to true and disables the existing row.
+        //It then sets status to an array of values of either "correct","partial","incorrect".
+        //then it updates the guessStatus state with those values. those are stored in the app.jsx
+        if(e.key === 'Enter' && index=== inputs.length - 1 && inputs[4]!==""){
             const newDisabled = [...disabled]
             newDisabled[index]=true;
             setDisabled(newDisabled);
+            onRowComplete(rowIndex);
+            const status = CompareGuessToWOTD('APPLE', inputs, guessStatus, activeRow)
+            setGuessStatus(status.newGuessStatus);
+            //This is what returns which guess was the correct answer
+            if(status.winningGuess){
+                setGameOver(true);
+                let correctGuessIndex = [rowIndex] + 1;
+                console.log(correctGuessIndex)
+                return correctGuessIndex;
+            }
+            //if you try to enter before all 5 inputs are entered it will give you this warning
+        }else if (e.key === 'Enter' && (index!==inputs.length-1 || inputs[4]=="")){
+            alert('Please fill the entire row before pressing enter')
         }
         if(e.key === 'Escape' && index){
             e.preventDefault();
@@ -59,11 +78,15 @@ export default function TileRow(){
     const setRef = useCallback((element, index) => {
         inputRefs.current[index] = { current: element };
     }, []);
+
     return(
-            <div className="tile-row">
+            <div 
+            className="tile-row">
                 {inputs.map((input, index) =>{
+                    const cellDisabled = disabled[index] || !active || gameOver;
+                    const status = guessStatus[rowIndex][index]
                     return(
-                    <div key={index} className="singleTile">
+                    <div key={index} className="singleTile" style={{backgroundColor: getStatusColor(status)}}>
                         <input
                             type="text"
                             ref={(element)=> setRef(element,index)}
@@ -71,7 +94,7 @@ export default function TileRow(){
                             value={input}
                             onChange={(e)=> handleInputChange(e,index)}
                             onKeyDown={(e)=> handleKeyDown(e, index)}
-                            disabled={disabled[index]}
+                            disabled={cellDisabled}
                             maxLength={1}
                         /> 
                     </div>)
@@ -79,3 +102,4 @@ export default function TileRow(){
             </div>            
     );
 }
+//{background: cellDisabled ? "grey" : ""}
