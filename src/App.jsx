@@ -10,13 +10,21 @@ import CalendarWithWords from './components/AdminComponents/CurrentMonthWords.js
 import FetchWordOfTheDay from './components/AdminComponents/WordOfTheDay.jsx';
 
 function App() {
-
+  const [guessStatus, setGuessStatus] = useState([['','','','','',],['','','','','',],['','','','','',],['','','','','',],['','','','','',],['','','','','',]])
+  const [guessIndex, setGuessIndex] = useState(0);
+  const [fullGuess, setFullGuess] = useState(['','','','','',''])
   return (
     <>
       <Routes>
         <Route path='/' element={<HomePage />} />
-        <Route path='/standard_game' element={<StandardGameBoard />} />
         <Route path='/admin/admin_dashboard/*' element={<AdminDashBoard />} />
+        <Route path='/standard_game' 
+          element={<StandardGameBoard
+                guessStatus={guessStatus}
+                setGuessStatus={setGuessStatus}
+                guessIndex={guessIndex}
+                setGuessIndex={setGuessIndex}
+          />}/>
         <Route path='/admin_dashboard/AllWords' element={<AllWords />} />
         <Route path='/admin_dashboard/AllUsers' element={<AllUsers />} />
         <Route path='/CurrentMonthWords' element={<CalendarWithWords />} />
