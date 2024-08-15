@@ -6,6 +6,8 @@ import HomePage from './components/HomePage.jsx';
 import AdminDashBoard from './components/AdminComponents/AdminDashBoard.jsx';
 import AllUsers from './components/AdminComponents/AllUser.jsx';
 import AllWords from './components/AdminComponents/AllWords.jsx';
+import CalendarWithWords from './components/AdminComponents/CurrentMonthWords.jsx';
+import FetchWordOfTheDay from './components/AdminComponents/WordOfTheDay.jsx';
 
 function App() {
   const [guessStatus, setGuessStatus] = useState([['','','','','',],['','','','','',],['','','','','',],['','','','','',],['','','','','',],['','','','','',]])
@@ -14,7 +16,8 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path='/' element={<HomePage/>}/>
+        <Route path='/' element={<HomePage />} />
+        <Route path='/admin/admin_dashboard/*' element={<AdminDashBoard />} />
         <Route path='/standard_game' 
           element={<StandardGameBoard
                 guessStatus={guessStatus}
@@ -22,11 +25,12 @@ function App() {
                 guessIndex={guessIndex}
                 setGuessIndex={setGuessIndex}
           />}/>
-        <Route path='/admin_dashboard/*' element={<AdminDashBoard />} />
         <Route path='/admin_dashboard/AllWords' element={<AllWords />} />
         <Route path='/admin_dashboard/AllUsers' element={<AllUsers />} />
-        <Route path='/timed_game'/>
-        <Route path='/account_details'/>
+        <Route path='/CurrentMonthWords' element={<CalendarWithWords />} />
+        <Route path='/WordOfTheDay' element={<FetchWordOfTheDay />} />
+        <Route path='/timed_game' />
+        <Route path='/account_details' />
       </Routes>
     </>
   )
