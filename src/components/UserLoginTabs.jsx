@@ -15,14 +15,25 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import Stack from '@mui/material/Stack';
-import {updateUserCredentials} from "../api/userApi.js";
-import {useState} from "react";
+import {updateUserCredentials,getUserStats} from "../api/userApi.js";
+import {useState,useEffect} from "react";
 
 
 export default function ShowTabs() {
     const [value, setValue] = React.useState('1');
     const [error, setError] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
+    const [rows,setRows] = useState("");
+
+    const getRows = async() => {
+        const user = await getUserStats(sessionStorage.getItem('username'));
+
+        setRows(user.stats);
+    }
+
+    useEffect(() => {
+        getRows();
+    }, []);
 
     const [formData, setFormData] = useState({
         username: "",
@@ -55,10 +66,8 @@ export default function ShowTabs() {
         return { wordsSolvedNum, totalTimePlayed, numOfGuesses};
     }
 
-    const rows = [
-        createData(10,150,25 )
-
-    ];
+    if(!rows )
+        return <h1>loading</h1>;
 
     return (
         <Box sx={{ width: '100%', typography: 'body1' }}>
@@ -75,24 +84,33 @@ export default function ShowTabs() {
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
                             <TableRow>
+                                <TableCell>Username</TableCell>
                                 <TableCell>Words Solved</TableCell>
-                                <TableCell align="right">Total Time Played (Minutes)</TableCell>
-                                <TableCell align="right">Total Guesses</TableCell>
+                                <TableCell>Overall Games</TableCell>
+                                <TableCell>Overall Score</TableCell>
+                                <TableCell>Regular Games</TableCell>
+                                <TableCell>Regular Score</TableCell>
+                                <TableCell>Timed Games</TableCell>
+                                <TableCell>Timed Score</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {rows.map((row) => (
                                 <TableRow
-                                    key={row.wordsSolvedNum}
+                                    key={rows.username}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
                                     <TableCell component="th" scope="row" align="center">
-                                        {row.wordsSolvedNum}
+                                        {rows.username}
                                     </TableCell>
-                                    <TableCell align="center">{row.totalTimePlayed}</TableCell>
-                                    <TableCell align="center">{row.numOfGuesses}</TableCell>
+                                    <TableCell align="center">{rows.word_count}</TableCell>
+                                    <TableCell align="center">{rows.overall_games}</TableCell>
+                                    <TableCell align="center">{rows.overall_score}</TableCell>
+                                    <TableCell align="center">{rows.regular_games}</TableCell>
+                                    <TableCell align="center">{rows.regular_score}</TableCell>
+                                    <TableCell align="center">{rows.timed_games}</TableCell>
+                                    <TableCell align="center">{rows.timed_score}</TableCell>
                                 </TableRow>
-                            ))}
+
                         </TableBody>
                     </Table>
                 </TableContainer>

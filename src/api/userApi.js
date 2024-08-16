@@ -36,3 +36,19 @@ export const updateUserCredentials = (userData) => {
         return data;
       });
 };
+
+export const getUserStats = (username) => {
+    let token = sessionStorage.getItem("usertoken");
+    console.log("token:",token);
+    const url = `${Base_Url}api/stats/user/${username}`;
+    return fetch(url,{
+        headers: {
+            "authorization": `Bearer ${token}`
+        }
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log("User Stats:",data);
+            return data;
+        });
+};

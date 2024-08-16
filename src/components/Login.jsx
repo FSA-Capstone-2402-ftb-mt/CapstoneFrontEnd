@@ -27,7 +27,8 @@ const Login = () => {
             if (response.ok) {
                 const data = await response.json();
                 setLogin(true);
-                sessionStorage.setItem('token', data.token);
+                sessionStorage.setItem('usertoken', data.token);
+                sessionStorage.setItem('username',username);
                 //console.log(data.token);
                 navigate('/loginTabs');
             } else {
