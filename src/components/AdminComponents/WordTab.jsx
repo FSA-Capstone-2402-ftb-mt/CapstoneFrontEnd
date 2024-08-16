@@ -33,7 +33,7 @@ export default function WordTable() {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Words</TableCell>
+            <TableCell>Words Table</TableCell>
             <TableCell align="right">ID</TableCell>
             <TableCell align="right">Word</TableCell>
             <TableCell align="right">Day of Week</TableCell>
@@ -43,7 +43,7 @@ export default function WordTable() {
         <TableBody>
           {rows.map((row) => (
             <TableRow
-              key={row.name}
+              key={row.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
