@@ -9,7 +9,7 @@ import AdminDashboard from './components/AdminDashBoard.jsx';
 function App() {
   const [guessStatus, setGuessStatus] = useState([['','','','','',],['','','','','',],['','','','','',],['','','','','',],['','','','','',],['','','','','',]])
   const [guessIndex, setGuessIndex] = useState(0);
-  const [fullGuess, setFullGuess] = useState(['','','','','',''])
+  const [fullGuess, setFullGuess] = useState([[],[],[],[],[],[]])
   return (
     <>
       <Routes>
@@ -20,6 +20,8 @@ function App() {
                 setGuessStatus={setGuessStatus}
                 guessIndex={guessIndex}
                 setGuessIndex={setGuessIndex}
+                fullGuess={fullGuess}
+                setFullGuess={setFullGuess}
           />}/>
         <Route path='/timed_game'/>
         <Route path='/account_details'/>

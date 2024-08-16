@@ -1,8 +1,9 @@
 import React from "react";
 import { useState } from "react";
 import TileRow from './TileRow/TileRow';
+import VirtualKeyboard from "./VirtualKeyboard/keyboard";
 
-export default function StandardGameBoard({guessStatus, setGuessStatus, guessIndex, setGuessIndex}){
+export default function StandardGameBoard({guessStatus, setGuessStatus, guessIndex, setGuessIndex, fullGuess, setFullGuess}){
 const [activeRow, setActiveRow] = useState(0);
 const [gameOver, setGameOver]=useState(false);
 
@@ -12,6 +13,8 @@ const handleRowComplete = (rowIndex)=>{
         setActiveRow(rowIndex+1)
     }
 }
+//trying to figure out how to import the keyboard so that I can have the onClick of the buttons
+//will change the specific input to the value of the key.
     return(
         <>
             <div className="game-board">
@@ -26,15 +29,16 @@ const handleRowComplete = (rowIndex)=>{
                         setGuessStatus={setGuessStatus}
                         guessIndex={guessIndex}
                         setGuessIndex={setGuessIndex}
+                        fullGuess={fullGuess}
+                        setFullGuess={setFullGuess}
                         gameOver={gameOver}
                         setGameOver={setGameOver}
                     />))}
-                {/* <TileRow />
-                <TileRow />
-                <TileRow />
-                <TileRow />
-                <TileRow />
-                <TileRow /> */}
+                    <VirtualKeyboard
+                        guessStatus={guessStatus}
+                        activeRow={activeRow}
+                        fullGuess={fullGuess}
+                    />
             </div>
         </>
     );
