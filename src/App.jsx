@@ -21,7 +21,7 @@ import Navigations from "./components/Navigations";
 function App() {
   const [guessStatus, setGuessStatus] = useState([['','','','','',],['','','','','',],['','','','','',],['','','','','',],['','','','','',],['','','','','',]])
   const [guessIndex, setGuessIndex] = useState(0);
-  const [fullGuess, setFullGuess] = useState(['','','','','',''])
+  const [fullGuess, setFullGuess] = useState([[],[],[],[],[],[]])
   return (
     <>
       <Routes>
@@ -33,6 +33,8 @@ function App() {
                 setGuessStatus={setGuessStatus}
                 guessIndex={guessIndex}
                 setGuessIndex={setGuessIndex}
+                fullGuess={fullGuess}
+                setFullGuess={setFullGuess}
           />}/>
         <Route path='/admin_dashboard/AllWords' element={<AllWords />} />
         <Route path='/admin_dashboard/AllUsers' element={<AllUsers />} />

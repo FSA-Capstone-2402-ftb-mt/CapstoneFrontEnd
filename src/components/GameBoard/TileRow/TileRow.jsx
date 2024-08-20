@@ -3,7 +3,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { CompareGuessToWOTD } from "./HandleInputChange";
 import getStatusColor from "./StatusColor";
 
-export default function TileRow({onRowComplete, rowIndex, active, status, guessStatus, setGuessStatus, guessIndex, setGuessIndex, activeRow, gameOver, setGameOver}){
+export default function TileRow({onRowComplete, rowIndex, active, status, guessStatus, setGuessStatus, guessIndex, setGuessIndex, activeRow, gameOver, setGameOver, fullGuess, setFullGuess}){
     const[inputs, setInputs] = useState(['','','','','']);
     const[disabled, setDisabled] = useState([false,true,true,true,true]);
     const inputRefs = useRef([]);
@@ -58,6 +58,12 @@ export default function TileRow({onRowComplete, rowIndex, active, status, guessS
             onRowComplete(rowIndex);
             const status = CompareGuessToWOTD('APPLE', inputs, guessStatus, activeRow)
             setGuessStatus(status.newGuessStatus);
+            //This part handles storing the guess and creating state for the guess in each game
+            const guess = [...inputs];
+            const newFullGuess = [...fullGuess]
+            newFullGuess[activeRow] = guess;
+            setFullGuess(newFullGuess);
+            console.log(newFullGuess);
             //This is what returns which guess was the correct answer
             if(status.winningGuess){
                 setGameOver(true);
@@ -65,10 +71,12 @@ export default function TileRow({onRowComplete, rowIndex, active, status, guessS
                 console.log(correctGuessIndex)
                 return correctGuessIndex;
             }
+
             //if you try to enter before all 5 inputs are entered it will give you this warning
         }else if (e.key === 'Enter' && (index!==inputs.length-1 || inputs[4]=="")){
             alert('Please fill the entire row before pressing enter')
         }
+        //just allows you to hit escape to stop entering any words
         if(e.key === 'Escape' && index){
             e.preventDefault();
             e.target.blur();
