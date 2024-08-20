@@ -1,45 +1,41 @@
 import * as React from 'react';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
-import dayjs from 'dayjs';
+import { useState, useEffect } from 'react';
 
-export default function BasicDateCalendar() {
-    const [selectedDate, setSelectedDate] = React.useState(null);
+const API_URL = 'http://localhost:3032/api/words/all';
 
-    // function to display the words of the month
-    const wordsOfTheMonth = {
-        '2024-07-30': 'Event A: Meeting at 10 AM',
-        '2024-08-01': 'Event B: Conference at 2 PM',
-    };
+//function to display all words 
+export default function AllWords() {
+    const [words, setWords] = useState([]);
 
-    // Format date to string for lookup
-    const formatDateForLookup = (date) => date.format('YYYY-MM-DD');
+    useEffect(() => {
+        const fetchAllWords = async () => {
+            try {
+                const response = await fetch(`${API_URL}`)
 
-    // Handle date change
-    const handleDateChange = (newValue) => {
-        setSelectedDate(newValue);
-    };
+                const result = await response.json();
+                console.log(result);
+                setWords(result);
 
-    // Get information based on selected date
-    const information = selectedDate ? dateInfo[formatDateForLookup(selectedDate)] : 'Select a date to see information';
+            } catch (e) {
+                console.error('Failed to fetch all words!');
+                console.error(e);
+            }
+        };
+        fetchAllWords();
+    }, [])
 
     return (
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <div style={{ display: 'flex' }}>
-                <DateCalendar
-                    onChange={handleDateChange}
-                />
-                <div style={{ marginLeft: '20px', padding: '10px', border: '1px solid #ccc' }}>
-                    <h3>Word Tab</h3>
-                    <p>{information}</p>
-                    <input type="text" placeholder="Change Word"></input><br></br>
-                    <button>Change Word</button><br></br>
-                    <button>Delete Word</button>
-
-                </div>
-            </div>
-        </LocalizationProvider>
+        <div>
+            <h1>Words List</h1>
+            <ul>
+                {words.map(word => (
+                    <li key={word.id}>
+                        {word.id}: {word.word}
+                    </li>
+                ))}
+            </ul>
+        </div>
     );
+   
 }
 
