@@ -3,7 +3,12 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { CompareGuessToWOTD } from "./HandleInputChange";
 import getStatusColor from "./StatusColor";
 
-export default function TileRow({onRowComplete, rowIndex, active, status, guessStatus, setGuessStatus, guessIndex, setGuessIndex, activeRow, gameOver, setGameOver, fullGuess, setFullGuess}){
+//WOTD IS FUNCTION IS WORKING BUT NOT UPDATING CORRECTLY. IT IS STILL USING APPLE AS THE DEFAULT.
+// NEED TO UPDATE THE CORRECT GUESS INDEX
+
+export default function TileRow({onRowComplete, rowIndex, active, status, guessStatus, setGuessStatus, guessIndex, setGuessIndex, activeRow, gameOver, setGameOver, fullGuess, setFullGuess,
+    WOTD
+}){
     const[inputs, setInputs] = useState(['','','','','']);
     const[disabled, setDisabled] = useState([false,true,true,true,true]);
     const inputRefs = useRef([]);
@@ -11,6 +16,8 @@ export default function TileRow({onRowComplete, rowIndex, active, status, guessS
     useEffect(()=>{
         inputRefs.current = inputRefs.current.slice(0, inputs.length).map((_, i)=> inputRefs.current[i] || React.createRef());
     },[inputs.length]);
+
+
 
     const handleInputChange = (e, index) =>{
         const value = e.target.value.toUpperCase();
@@ -56,7 +63,7 @@ export default function TileRow({onRowComplete, rowIndex, active, status, guessS
             newDisabled[index]=true;
             setDisabled(newDisabled);
             onRowComplete(rowIndex);
-            const status = CompareGuessToWOTD('APPLE', inputs, guessStatus, activeRow)
+            const status = CompareGuessToWOTD(WOTD, inputs, guessStatus, activeRow)
             setGuessStatus(status.newGuessStatus);
             //This part handles storing the guess and creating state for the guess in each game
             const guess = [...inputs];

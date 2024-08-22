@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import {
     BrowserRouter as Router,
@@ -17,11 +17,25 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 import UserLoginTabs from "./components/UserLoginTabs";
 import Navigations from "./components/Navigations";
+import getWOTD from './components/GameBoard/TileRow/getWOTD.js';
 
 function App() {
   const [guessStatus, setGuessStatus] = useState([['','','','','',],['','','','','',],['','','','','',],['','','','','',],['','','','','',],['','','','','',]])
   const [guessIndex, setGuessIndex] = useState(0);
   const [fullGuess, setFullGuess] = useState([[],[],[],[],[],[]])
+
+  const[WOTD, setWOTD] = useState('APPLE')
+  
+  const getNewWOTD = async () =>{
+    const newWOTD = await getWOTD();
+    setWOTD(newWOTD);
+    return WOTD
+  }
+  useEffect(()=>{
+    getNewWOTD();
+  },[])
+
+  console.log(guessStatus);
   return (
     <>
       <Routes>
@@ -35,6 +49,7 @@ function App() {
                 setGuessIndex={setGuessIndex}
                 fullGuess={fullGuess}
                 setFullGuess={setFullGuess}
+                WOTD={WOTD}
           />}/>
         <Route path='/admin_dashboard/AllWords' element={<AllWords />} />
         <Route path='/admin_dashboard/AllUsers' element={<AllUsers />} />
