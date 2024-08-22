@@ -74,7 +74,7 @@ export default function TileRow({onRowComplete, rowIndex, active, status, guessS
             //This is what returns which guess was the correct answer
             if(status.winningGuess){
                 setGameOver(true);
-                let correctGuessIndex = [rowIndex] + 1;
+                let correctGuessIndex = [activeRow] + 1;
                 console.log(correctGuessIndex)
                 return correctGuessIndex;
             }

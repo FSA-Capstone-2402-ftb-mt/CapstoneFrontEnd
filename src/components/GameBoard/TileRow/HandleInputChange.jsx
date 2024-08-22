@@ -1,4 +1,4 @@
-import getWOTD from "./getWOTD";
+import React from "react";
 
 export function CompareGuessToWOTD(WOTD, inputs, guessStatus, currentRow){
     const WOTDArray = WOTD.word.toUpperCase().split("");
