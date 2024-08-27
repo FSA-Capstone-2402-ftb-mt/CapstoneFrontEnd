@@ -4,6 +4,7 @@ import { registerUser } from "../api/userApi.js";
 const RegisterForm = () => {
     const [formData, setFormData] = useState({
         username: "",
+        email:"",
         password: ""
     });
 
@@ -64,11 +65,22 @@ const RegisterForm = () => {
                     />
                 </div>
                 <div>
+                    <label>Email:</label>
+                    <input
+                        required={true}
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div>
                     <label>Password:</label>
                     <input
                         type="password"
                         name="password"
                         value={formData.password}
+                        minLength="8" required
                         onChange={handleChange}
                     />
                 </div>

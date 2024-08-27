@@ -26,11 +26,18 @@ const Login = () => {
             );
             if (response.ok) {
                 const data = await response.json();
+                console.log("data:",data);
                 setLogin(true);
-                sessionStorage.setItem('usertoken', data.token);
                 sessionStorage.setItem('username',username);
-                //console.log(data.token);
-                navigate('/loginTabs');
+                sessionStorage.setItem('usernamepassword',password);
+                if (data.isAdmin) {
+                    sessionStorage.setItem('adminToken', data.adminToken);
+                    navigate('/admin/admin_dashboard')
+                }else {
+                    sessionStorage.setItem('usertoken', data.token);
+                    navigate('/loginTabs');
+                }
+                console.log(data.token);
             } else {
                 setError("Login failed");
             }

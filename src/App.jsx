@@ -15,8 +15,9 @@ import CalendarWithWords from './components/AdminComponents/CurrentMonthWords.js
 import FetchWordOfTheDay from './components/AdminComponents/WordOfTheDay.jsx';
 import Register from "./components/Register";
 import Login from "./components/Login";
+import Logout from "./components/Logout";
 import UserLoginTabs from "./components/UserLoginTabs";
-import Navigations from "./components/Navigations";
+
 
 function App() {
   const [guessStatus, setGuessStatus] = useState([['','','','','',],['','','','','',],['','','','','',],['','','','','',],['','','','','',],['','','','','',]])
@@ -42,10 +43,10 @@ function App() {
         <Route path='/WordOfTheDay' element={<FetchWordOfTheDay />} />
         <Route path='/timed_game' />
         <Route path='/account_details' />
-        <Route path="/" element={<Navigations />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/loginTabs" element={<UserLoginTabs />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/loginTabs' element={<UserLoginTabs />} />
+          <Route path='/logout' element={<Logout />} />
       </Routes>
     </>
   )
