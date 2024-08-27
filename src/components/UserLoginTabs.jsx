@@ -31,7 +31,7 @@ export default function ShowTabs() {
 
     const getRows = async() => {
         const user = await getUserStats(sessionStorage.getItem('username'));
-
+        console.log("user:",user);
         setRows(user.stats);
     }
 
@@ -95,20 +95,19 @@ export default function ShowTabs() {
                 </Box>
                 <TabPanel value="1">
                     <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Username</TableCell>
-                                <TableCell>Words Solved</TableCell>
-                                <TableCell>Overall Games</TableCell>
-                                <TableCell>Overall Score</TableCell>
-                                <TableCell>Regular Games</TableCell>
-                                <TableCell>Regular Score</TableCell>
-                                <TableCell>Timed Games</TableCell>
-                                <TableCell>Timed Score</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
+                        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Username</TableCell>
+                                    <TableCell>Max Streak</TableCell>
+                                    <TableCell>Overall Games</TableCell>
+                                    <TableCell>Regular Games</TableCell>
+                                    <TableCell>Timed Games</TableCell>
+                                    <TableCell>Timed Score</TableCell>
+                                    <TableCell>Word Count</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
                                 <TableRow
                                     key={rows.username}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -116,18 +115,19 @@ export default function ShowTabs() {
                                     <TableCell component="th" scope="row" align="center">
                                         {rows.username}
                                     </TableCell>
-                                    <TableCell align="center">{rows.word_count}</TableCell>
-                                    <TableCell align="center">{rows.overall_games}</TableCell>
-                                    <TableCell align="center">{rows.overall_score}</TableCell>
-                                    <TableCell align="center">{rows.regular_games}</TableCell>
-                                    <TableCell align="center">{rows.regular_score}</TableCell>
-                                    <TableCell align="center">{rows.timed_games}</TableCell>
+                                    <TableCell align="center">{rows.max_streak}</TableCell>
+                                    <TableCell align="center">{rows.number_of_games.overall_games}</TableCell>
+                                    <TableCell align="center">{rows.number_of_games.regular_games}</TableCell>
+                                    <TableCell align="center">{rows.number_of_games.timed_games}</TableCell>
                                     <TableCell align="center">{rows.timed_score}</TableCell>
+                                    <TableCell align="center">{rows.word_count}</TableCell>
+
+
                                 </TableRow>
 
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
                 </TabPanel>
                 <TabPanel value="2">
                     {error && (
@@ -191,20 +191,20 @@ export default function ShowTabs() {
                 </TabPanel>
                 <TabPanel value="3">
                     <Button
-                            style={{
-                                backgroundColor:'#3c52b2',
-                                color: amber["900"]
-                            }}
-                    onClick={() => {
-                        sessionStorage.removeItem('username');
-                        sessionStorage.removeItem('usernamepassword');
-                        sessionStorage.removeItem('usertoken');
-                        navigate("/");
-                    }}
-                >
-                    Log Out
-                </Button>
-                       </TabPanel>
+                        style={{
+                            backgroundColor:'#3c52b2',
+                            color: amber["900"]
+                        }}
+                        onClick={() => {
+                            sessionStorage.removeItem('username');
+                            sessionStorage.removeItem('usernamepassword');
+                            sessionStorage.removeItem('usertoken');
+                            navigate("/");
+                        }}
+                    >
+                        Log Out
+                    </Button>
+                </TabPanel>
                 <TabPanel value="4">
                     <Button
                         style={{
