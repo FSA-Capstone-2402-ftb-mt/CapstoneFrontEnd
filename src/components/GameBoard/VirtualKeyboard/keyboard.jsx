@@ -36,7 +36,7 @@ export default function VirtualKeyboard({guessStatus, activeRow, fullGuess}){
                 <div className="keyboardRow">
                     {Object.keys(qwertyTop).map((letter)=>{
                         const status = qwertyTop[letter]
-                        console.log(letter)
+                        // console.log(letter)
                         return(
                             <div className="key" key={letter} style={{backgroundColor:status}}>
                                 {letter.toUpperCase()}
