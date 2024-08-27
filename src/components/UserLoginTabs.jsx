@@ -15,8 +15,10 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import Stack from '@mui/material/Stack';
-import {updateUserCredentials,getUserStats} from "../api/userApi.js";
+import {getUserStats,updateUsername,updatePassword} from "../api/userApi.js";
 import {useState,useEffect} from "react";
+import {amber} from "@mui/material/colors";
+import { useNavigate } from "react-router-dom"
 
 
 export default function ShowTabs() {
@@ -24,12 +26,16 @@ export default function ShowTabs() {
     const [error, setError] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
     const [rows,setRows] = useState("");
+    const navigate = useNavigate();
+
 
     const getRows = async() => {
         const user = await getUserStats(sessionStorage.getItem('username'));
 
         setRows(user.stats);
     }
+
+    console.log("rows:",rows);
 
     useEffect(() => {
         getRows();
@@ -55,20 +61,27 @@ export default function ShowTabs() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const token = await updateUserCredentials(formData);
-            setSuccessMessage("Registration successful!");
+            let oldUserName = sessionStorage.getItem("username");
+            let oldUserNamePassword = sessionStorage.getItem("usernamepassword");
+            let data1 = await updateUsername(oldUserName,formData.username);
+            console.log("data1:",data1);
+            sessionStorage.setItem('username',formData.username);
+            let newUserName = sessionStorage.getItem("username");
+            let newUserNamePassword = formData.password;
+            console.log("oldusername:",oldUserName);
+            console.log("newusername:",newUserName);
+            console.log("olduserpassword:",oldUserNamePassword);
+            console.log("newuserpassword:",newUserNamePassword);
+            let data2 = await updatePassword(newUserName,oldUserNamePassword,formData.password);
+            console.log("data2:",data2);
+            setSuccessMessage("Username and password updated successfully!");
         } catch (error) {
             setError(error.message);
         }
     };
 
-    function createData(wordsSolvedNum,totalTimePlayed, numOfGuesses) {
-        return { wordsSolvedNum, totalTimePlayed, numOfGuesses};
-    }
-
-    if(!rows )
+    if(!rows)
         return <h1>loading</h1>;
-
     return (
         <Box sx={{ width: '100%', typography: 'body1' }}>
             <TabContext value={value}>
@@ -77,6 +90,7 @@ export default function ShowTabs() {
                         <Tab label="Statistics" value="1" />
                         <Tab label="Settings" value="2" />
                         <Tab label="Log Out" value="3" />
+                        <Tab label="Home" value="4" />
                     </TabList>
                 </Box>
                 <TabPanel value="1">
@@ -175,7 +189,35 @@ export default function ShowTabs() {
                         </Stack>
                     </form>
                 </TabPanel>
-                <TabPanel value="3">Log Out</TabPanel>
+                <TabPanel value="3">
+                    <Button
+                            style={{
+                                backgroundColor:'#3c52b2',
+                                color: amber["900"]
+                            }}
+                    onClick={() => {
+                        sessionStorage.removeItem('username');
+                        sessionStorage.removeItem('usernamepassword');
+                        sessionStorage.removeItem('usertoken');
+                        navigate("/");
+                    }}
+                >
+                    Log Out
+                </Button>
+                       </TabPanel>
+                <TabPanel value="4">
+                    <Button
+                        style={{
+                            backgroundColor:'#3c52b2',
+                            color: amber["900"]
+                        }}
+                        onClick={() => {
+                            navigate("/");
+                        }}
+                    >
+                        Go to Home Page
+                    </Button>
+                </TabPanel>
             </TabContext>
         </Box>
     );
