@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-const apiURL = 'http://localhost:3032/api/users/';
+const apiURL = 'http://localhost:3032/api/admin/all-users';
 
 
 export default function AllUsers() {
@@ -9,24 +9,26 @@ export default function AllUsers() {
 
 
   const areYouAdmin = async () => {
-    const token = sessionStorage.getItem('adminToken');
+  
     try {
       const response = await fetch(`${apiURL}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          'authorization': `Bearer `,
         },
-      })
-      const data = await response.json();
-      sessionStorage.setItem('adminToken', data.token);
+      });
 
+      const data = await response.json();
+
+      console.log('Admin Verified!');
     } catch (e) {
-      console.error('You are not Admin!')
+      console.error('You are not Admin!', e);
     }
-  }
+  };
+
   areYouAdmin();
-  
+
 
   useEffect(() => {
     if (isAdmin) {
@@ -37,6 +39,7 @@ export default function AllUsers() {
           const result = await response.json();
           console.log(result);
           setUsers(result);
+
         } catch (e) {
           console.error('Failed to fetch all users!');
           console.error(e);

@@ -7,25 +7,42 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Button } from '@mui/material';
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 
+
+const API_URL = 'http://localhost:3032/api/words/all';
+
 //Create a table to show a few of the words with it ID, Word, Day of the week and Day Name
-function createData(id, word, day_of_week, day_name) {
-  return { id, word, day_of_week, day_name };
+function createData(id, word) {
+  return { id, word };
 }
 
-const rows = [
-  createData(1, 'cameo', 1, 'Sunday'),
-  createData(2, 'adapt', 2, 'Monday'),
-  createData(3, 'drake', 3, 'Tuesday'),
-  createData(4, 'exile', 4, 'Wednesday'),
-]
+export default function adWordTable() {
+  const [words, setWords] = useState([]);
 
-export default function WordTable() {
+  useEffect(() => {
+    const fetchAllWords = async () => {
+      try {
+        const response = await fetch(`${API_URL}`)
+
+        const result = await response.json();
+        console.log(result);
+
+        const minWords = result.slice(0, 5).map((words) => createData(words.id, words.word));
+        setWords(minWords);
+      } catch (e) {
+        console.error('Failed to fetch all words!');
+        console.error(e);
+      }
+    };
+    fetchAllWords();
+  }, [])
+
   const navigate = useNavigate();
 
   const handleWordClick = () => {
-    navigate('/admin_dashboard/AllWords')
+    navigate('/admin/admin_dashboard/AllWords')
   };
 
   return (
@@ -41,18 +58,18 @@ export default function WordTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {words.map((words) => (
             <TableRow
-              key={row.id}
+              key={words.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {row.name}
+                {words.word}
               </TableCell>
-              <TableCell align="right">{row.id}</TableCell>
-              <TableCell align="right">{row.word}</TableCell>
-              <TableCell align="right">{row.day_of_week}</TableCell>
-              <TableCell align="right">{row.day_name}</TableCell>
+              <TableCell align="right">{words.id}</TableCell>
+              <TableCell align="right">{words.word}</TableCell>
+              <TableCell align="right">{words.day_of_week}</TableCell>
+              <TableCell align="right">{words.day_name}</TableCell>
             </TableRow>
           ))}
         </TableBody>

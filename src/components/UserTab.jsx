@@ -7,6 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 function createData(id, username, join_date, overall_score, overall_games) {
   return {id, username, join_date, overall_score, overall_games };
@@ -20,6 +21,12 @@ const rows = [
 ];
 
 export default function UserTable() {
+  const navigate = useNavigate();
+
+  const handleUserClick = () =>{
+    navigate('/admin/admin_dashboard/AllUsers');
+  };
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -52,6 +59,7 @@ export default function UserTable() {
         </TableBody>
       </Table>
       <Button
+      onClick={handleUserClick}
       style={{
         backgroundColor: 'lightblue',
         borderRadius:'25px',

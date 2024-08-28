@@ -28,7 +28,6 @@ export default function CalendarWithWords() {
         fetchMonthWords(currentMonth);
     }, [selectedDate]);
 
-
     const handleDateChange = (newDate) => {
         setSelectedDate(newDate);
         const day = newDate.date();
