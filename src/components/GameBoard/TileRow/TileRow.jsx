@@ -7,7 +7,7 @@ import getStatusColor from "./StatusColor";
 // NEED TO UPDATE THE CORRECT GUESS INDEX
 
 export default function TileRow({onRowComplete, rowIndex, active, status, guessStatus, setGuessStatus, guessIndex, setGuessIndex, activeRow, gameOver, setGameOver, fullGuess, setFullGuess,
-    WOTD
+    WOTD, setCorrectGuess
 }){
     const[inputs, setInputs] = useState(['','','','','']);
     const[disabled, setDisabled] = useState([false,true,true,true,true]);
@@ -74,7 +74,13 @@ export default function TileRow({onRowComplete, rowIndex, active, status, guessS
             //This is what returns which guess was the correct answer
             if(status.winningGuess){
                 setGameOver(true);
-                let correctGuessIndex = [activeRow] + 1;
+                setCorrectGuess(true);
+                // console.log("Row Index:", rowIndex)
+                // console.log("status:", status)
+                // console.log("guessStatus:", guessStatus)
+                // console.log("Guess Index:", guessIndex)
+                // console.log("Active Row:", activeRow + 1)
+                let correctGuessIndex = (guessIndex + 1);
                 console.log(correctGuessIndex)
                 return correctGuessIndex;
             }

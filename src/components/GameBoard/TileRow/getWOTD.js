@@ -14,5 +14,4 @@ export default async function getWOTD() {
         console.error('Failed to get word of the day!');
         console.error(e);
     }
-
 }
