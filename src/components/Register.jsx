@@ -1,5 +1,8 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { registerUser } from "../api/userApi.js";
+import Button from "@mui/material/Button";
+import {amber} from "@mui/material/colors";
+import { useNavigate } from "react-router-dom"
 
 const RegisterForm = () => {
     const [formData, setFormData] = useState({
@@ -28,6 +31,7 @@ const RegisterForm = () => {
             setError(error.message);
         }
     };
+    const navigate = useNavigate();
 
     return (
         <div className="register">
@@ -86,6 +90,20 @@ const RegisterForm = () => {
                 </div>
                 <button type="submit">Register</button>
             </form>
+            <div>
+                <Button
+                    style={{
+                        marginTop: 10,
+                        backgroundColor: '#3c52b2',
+                        color: amber["900"]
+                    }}
+                    onClick={() => {
+                        navigate("/");
+                    }}
+                >
+                    Go to Home Page
+                </Button>
+            </div>
         </div>
     );
 };
