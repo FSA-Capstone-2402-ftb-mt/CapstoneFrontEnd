@@ -105,6 +105,12 @@ export default function ShowTabs() {
                                     <TableCell>Timed Games</TableCell>
                                     <TableCell>Timed Score</TableCell>
                                     <TableCell>Word Count</TableCell>
+                                    <TableCell>Guess-1</TableCell>
+                                    <TableCell>Guess-2</TableCell>
+                                    <TableCell>Guess-3</TableCell>
+                                    <TableCell>Guess-4</TableCell>
+                                    <TableCell>Guess-5</TableCell>
+                                    <TableCell>Guess-6</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -121,8 +127,12 @@ export default function ShowTabs() {
                                     <TableCell align="center">{rows.number_of_games.timed_games}</TableCell>
                                     <TableCell align="center">{rows.timed_score}</TableCell>
                                     <TableCell align="center">{rows.word_count}</TableCell>
-
-
+                                    <TableCell align="center">{rows.guesses.guess_1}</TableCell>
+                                    <TableCell align="center">{rows.guesses.guess_2}</TableCell>
+                                    <TableCell align="center">{rows.guesses.guess_3}</TableCell>
+                                    <TableCell align="center">{rows.guesses.guess_4}</TableCell>
+                                    <TableCell align="center">{rows.guesses.guess_5}</TableCell>
+                                    <TableCell align="center">{rows.guesses.guess_6}</TableCell>
                                 </TableRow>
 
                             </TableBody>
