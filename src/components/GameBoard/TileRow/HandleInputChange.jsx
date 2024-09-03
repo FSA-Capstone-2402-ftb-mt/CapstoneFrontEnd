@@ -1,7 +1,8 @@
 import React from "react";
 
 export function CompareGuessToWOTD(WOTD, inputs, guessStatus, currentRow){
-    const WOTDArray = WOTD.word.toUpperCase().split("");
+    //const WOTDArray = WOTD.wotd.toUpperCase().split("");
+    const WOTDArray = WOTD.wotd.toUpperCase().split("");
     const newGuessStatus = [...guessStatus]
     let winningGuess = true;
     for(let i = 0; i < inputs.length; i++){
@@ -15,6 +16,5 @@ export function CompareGuessToWOTD(WOTD, inputs, guessStatus, currentRow){
             newGuessStatus[currentRow][i]="incorrect";
         }
     }
-    
     return{newGuessStatus, winningGuess};
 }

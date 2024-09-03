@@ -7,7 +7,7 @@ import getStatusColor from "./StatusColor";
 // NEED TO UPDATE THE CORRECT GUESS INDEX
 
 export default function TileRow({onRowComplete, rowIndex, active, status, guessStatus, setGuessStatus, guessIndex, setGuessIndex, activeRow, gameOver, setGameOver, fullGuess, setFullGuess,
-    WOTD, setCorrectGuess
+    WOTD, setCorrectGuess, currentDate, handleStart, startTimer
 }){
     const[inputs, setInputs] = useState(['','','','','']);
     const[disabled, setDisabled] = useState([false,true,true,true,true]);
@@ -16,6 +16,12 @@ export default function TileRow({onRowComplete, rowIndex, active, status, guessS
     useEffect(()=>{
         inputRefs.current = inputRefs.current.slice(0, inputs.length).map((_, i)=> inputRefs.current[i] || React.createRef());
     },[inputs.length]);
+
+    // useEffect((handleStart)=>{
+    //     if(!startTimer){
+    //         handleStart();
+    //     }
+    // },[inputRefs])
 
 
 
@@ -71,17 +77,12 @@ export default function TileRow({onRowComplete, rowIndex, active, status, guessS
             newFullGuess[activeRow] = guess;
             setFullGuess(newFullGuess);
             console.log(newFullGuess);
-            //This is what returns which guess was the correct answer
+            //This is what returns which guess was the correct answer & sets the game to game over
+
             if(status.winningGuess){
                 setGameOver(true);
                 setCorrectGuess(true);
-                // console.log("Row Index:", rowIndex)
-                // console.log("status:", status)
-                // console.log("guessStatus:", guessStatus)
-                // console.log("Guess Index:", guessIndex)
-                // console.log("Active Row:", activeRow + 1)
                 let correctGuessIndex = (guessIndex + 1);
-                console.log(correctGuessIndex)
                 return correctGuessIndex;
             }
 

@@ -15,3 +15,7 @@ export default async function getWOTD() {
         console.error(e);
     }
 }
+
+
+// if(last_played === todaysdate){
+// setgameOver(true)

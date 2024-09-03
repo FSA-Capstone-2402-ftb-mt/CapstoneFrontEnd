@@ -2,16 +2,22 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import TileRow from './TileRow/TileRow';
 import VirtualKeyboard from "./VirtualKeyboard/keyboard";
+import getCurrentDayOfYearEST from "./DateHandler";
+import StopWatch from "./Stopwatch/Stopwatch";
 
-export default function StandardGameBoard({guessStatus, setGuessStatus, guessIndex, setGuessIndex, fullGuess, setFullGuess, WOTD}){
+export default function StandardGameBoard({guessStatus, setGuessStatus, guessIndex, setGuessIndex, fullGuess, setFullGuess, WOTD, handleStart, setStartTimer, startTimer, 
+    pauseTimer, setPauseTimer, time, setTime
+}){
 const [activeRow, setActiveRow] = useState(0);
 const [gameOver, setGameOver]=useState(false);
 const [correctGuess, setCorrectGuess] = useState(false);
+const [isPlaying, setIsPlaying] = useState(false)
+
+const currentDate = getCurrentDayOfYearEST();
+// console.log(`Today's date of ${currentDate} / 365`)
 
 const username = sessionStorage.getItem('username')
 const token = sessionStorage.getItem('usertoken')
-// console.log(username);
-// const username = "TylerS"
 
 const handleRowComplete = (rowIndex)=>{
     //This correctly sets game over to True if you fail to get the correct guess after 5 guesses
@@ -22,12 +28,39 @@ const handleRowComplete = (rowIndex)=>{
         setActiveRow(rowIndex+1)
     }
 }
-//Backend stat database needs "username", "correctGuess" which is T/F, "attempts" = # of guesses it took, "word" = WOTD
 let word = WOTD;
 
-async function updateStats(username, correctGuess, attempts, word){
+// NEEEEED TO DO THIS PART AND FINISH THIS FUNCTION
+async function getLastPlayed(){
     try{
-        // NEEDS FIXING / FINISHING
+        const response = await fetch('http://localhost:3032/api/game/*****')
+        const result = await response.json();
+        console.log(result.last_played);
+        //need to use result.last_played
+        // const last_played = result.last_played but I will need to see what the 
+        // return last_played
+    }catch(e){
+        console.error('Failure to get last time played', e);
+    }
+}
+//need to add last_played POST AND GET REQUEST
+//Backend stat database needs "username", "correctGuess" which is T/F, "attempts" = # of guesses it took, "word" = WOTD
+async function updateStats(username, correctGuess, attempts, word, currentDate){
+    try{
+        const response = await fetch(`http://localhost:3032/api/game/data/${username}/update`,{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization' : `Bearer ${token}`
+            },
+            body: JSON.stringify({ username: username, last_played: currentDate})
+        });
+        const info = await response.json();
+        console.log(info);
+    }catch(e){
+        console.error('Failure to update last played date')
+    }
+    try{
         const response = await fetch('http://localhost:3032/api/game/regular',{
             method: 'POST',
             headers: {
@@ -42,18 +75,44 @@ async function updateStats(username, correctGuess, attempts, word){
         console.error('Failure to update stats',e)
     }
 }
+//useEffect that runs UpdateStats when gameOver or activeRow changes
 useEffect(()=>{
     if(gameOver){
-        console.log("Updating Stats")
         updateStats(username, correctGuess, activeRow, word)
+        setPauseTimer(true);
     }
 },[activeRow, gameOver])
 
-//trying to figure out how to import the keyboard so that I can have the onClick of the buttons
-//will change the specific input to the value of the key.
+const startGame = () => {
+    setIsPlaying(true);
+    setStartTimer(true);
+    setPauseTimer(false);
+}
+
+useEffect(()=>{
+    if(gameOver)console.log("Final time:", time)
+},[gameOver])
     return(
         <>
-            <div className="game-board">
+        <div className="game-container">
+            {!isPlaying && (
+                <div className="overlay">
+                    <button className="play-button" onClick={startGame}>
+                        Play Game & Start Timer!
+                    </button>
+                </div>
+            )}
+            <div className="timer-container">
+                <StopWatch
+                    setStartTimer={setStartTimer}
+                    startTimer={startTimer}
+                    setPauseTimer={setPauseTimer}
+                    pauseTimer={pauseTimer}
+                    time={time}
+                    setTime={setTime}
+                />
+            </div>
+            <div className={`game-board ${isPlaying ? '' : 'disabled'}`}>
                 {guessStatus.map((_, index)=>(
                     <TileRow
                         key={index}
@@ -71,6 +130,8 @@ useEffect(()=>{
                         setGameOver={setGameOver}
                         WOTD={WOTD}
                         setCorrectGuess={setCorrectGuess}
+                        currentDate={currentDate}
+                        handleStart={handleStart}
                     />))}
                     <VirtualKeyboard
                         guessStatus={guessStatus}
@@ -78,6 +139,7 @@ useEffect(()=>{
                         fullGuess={fullGuess}
                     />
             </div>
-        </>
+        </div>
+    </>
     );
 }

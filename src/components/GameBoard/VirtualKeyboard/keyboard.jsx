@@ -57,7 +57,6 @@ export default function VirtualKeyboard({guessStatus, activeRow, fullGuess}){
                     }
                 </div>
                 <div className="keyboardRow">
-                    <div className="key specialKey">Enter</div>
                         {Object.keys(qwertyBot).map((letter)=>{
                             const status = qwertyBot[letter]
                             return(
@@ -67,7 +66,6 @@ export default function VirtualKeyboard({guessStatus, activeRow, fullGuess}){
                             )
                         })
                         }
-                    <div className="key specialKey">Delete</div>
                 </div>
             </div>
         </>

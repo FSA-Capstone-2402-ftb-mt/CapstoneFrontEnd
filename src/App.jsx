@@ -23,9 +23,14 @@ function App() {
   const [guessStatus, setGuessStatus] = useState([['','','','','',],['','','','','',],['','','','','',],['','','','','',],['','','','','',],['','','','','',]])
   const [guessIndex, setGuessIndex] = useState(0);
   const [fullGuess, setFullGuess] = useState([[],[],[],[],[],[]])
+  const [startTimer, setStartTimer] = useState(false);
+  const[pauseTimer, setPauseTimer] = useState(true);
+  const [time, setTime] = useState(0);
 
   const[WOTD, setWOTD] = useState('APPLE')
-  
+
+  //get from api
+  // if(todaysDate === API)
   const getNewWOTD = async () =>{
     const newWOTD = await getWOTD();
     setWOTD(newWOTD);
@@ -35,7 +40,6 @@ function App() {
     getNewWOTD();
   },[])
 
-  console.log(guessStatus);
   return (
     <>
       <Routes>
@@ -50,6 +54,12 @@ function App() {
                 fullGuess={fullGuess}
                 setFullGuess={setFullGuess}
                 WOTD={WOTD}
+                setStartTimer={setStartTimer}
+                startTimer={startTimer}
+                pauseTimer={pauseTimer}
+                setPauseTimer={setPauseTimer}
+                time={time}
+                setTime={setTime}
           />}/>
         <Route path='/admin_dashboard/AllWords' element={<AllWords />} />
         <Route path='/admin_dashboard/AllUsers' element={<AllUsers />} />
